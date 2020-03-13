@@ -137,6 +137,12 @@ public class CoinMan extends ApplicationAdapter {
 			}
 		}
 
+		for(int i = 0; i < bombRectangles.size(); i ++){
+			if(Intersector.overlaps(manRectangle, bombRectangles.get(i))){
+				Gdx.app.log("Bomb!", "Bomb!!!");
+			}
+		}
+
 		batch.end();
 	}
 	
