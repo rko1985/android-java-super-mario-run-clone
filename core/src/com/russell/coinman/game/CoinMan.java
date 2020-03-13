@@ -25,6 +25,11 @@ public class CoinMan extends ApplicationAdapter {
 	ArrayList<Integer> coinYs = new ArrayList<>();
 	Texture coin;
 	int coinCount;
+
+	ArrayList<Integer> bombXs = new ArrayList<>();
+	ArrayList<Integer> bombYs = new ArrayList<>();
+	Texture bomb;
+	int bombCount;
 	
 	@Override
 	public void create () {
@@ -39,6 +44,7 @@ public class CoinMan extends ApplicationAdapter {
 		manY = Gdx.graphics.getHeight() / 2;
 
 		coin = new Texture("coin.png");
+		bomb = new Texture("bomb.png");
 		random = new Random();
 	}
 
@@ -48,11 +54,31 @@ public class CoinMan extends ApplicationAdapter {
 		coinXs.add(Gdx.graphics.getWidth());
 	}
 
+	public void makeBomb(){
+		float height = random.nextFloat() * Gdx.graphics.getHeight();
+		bombYs.add((int) height);
+		bombXs.add(Gdx.graphics.getWidth());
+	}
+
 	@Override
 	public void render () {
 		batch.begin();
 		batch.draw(background, 0, 0, Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
+		//Bombs
+		if (bombCount < 250){
+			bombCount++;
+		} else {
+			bombCount = 0;
+			makeBomb();
+		}
+
+		for (int i = 0; i < bombXs.size(); i++){
+			batch.draw(bomb, bombXs.get(i), bombYs.get(i));
+			bombXs.set(i, bombXs.get(i) - 8);
+		}
+
+		//Coins
 		if (coinCount < 100){
 			coinCount++;
 		} else {
@@ -64,6 +90,7 @@ public class CoinMan extends ApplicationAdapter {
 			batch.draw(coin, coinXs.get(i), coinYs.get(i));
 			coinXs.set(i, coinXs.get(i) - 4);
 		}
+
 
 		if(Gdx.input.justTouched()){
 			velocity = -10;
